@@ -12,15 +12,19 @@ layersLock = threading.Lock()
 # does this need a comment?
 class main:
     # initialize
-    def init(self, size=(800,400), caption = None, icon = None):
+    def init(self, size=(800,400), caption = None, icon = None, fps = 60):
         pygame.init()
         self.screen = pygame.display.set_mode(size)
         if icon is not None:
             self.icon = pygame.image.load(icon).convert()
-            pygame.display.set_icon(icon)
+            pygame.display.set_icon(self.icon)
         if caption is not None:
             self.caption = caption
-            pygame.display.set_caption(caption)
+            pygame.display.set_caption(self.caption)
+
+        self.fps = fps
+        self.clock = pygame.time.Clock()
+        self.dt = 1 / fps
         return self.screen
 
     # blit everything
@@ -64,7 +68,12 @@ class main:
     def updateScreen(self, layers):
         self.blitAll(layers)
         pygame.display.flip()
-        pygame.Clock.tick(60)
+        self.dt = self.clock.tick(self.fps) / 1000.0
+
+    def getDeltaTime(self):
+        if not hasattr(self, 'dt'):
+            self.dt = 1
+        return self.dt
 
 
 
@@ -99,14 +108,15 @@ class sprite:
         # return
         return self.img, self.rect
     
-    def update(self, handler = None):
+    def update(self, renderer, handler = None):
 
+        self.dt = renderer.getDeltaTime()
         if handler is not None:
             handler(self)
 
-        self.veloy += self.gravity
-        self.rect.x += self.velox
-        self.rect.y += self.veloy
+        self.veloy += self.gravity * self.dt
+        self.rect.x += self.velox * self.dt
+        self.rect.y += self.veloy * self.dt
 
         if self.rect.bottom >= self.floor:
             self.rect.bottom = self.floor
