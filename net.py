@@ -1,5 +1,5 @@
 import socket
-import libs.belacomInfo as belacomInfo
+import belacomInfo
 import json
 import sys
 import threading
