@@ -58,3 +58,7 @@ if r:
     print(r)
 ```
 and you suddenly have both files compressed into one. if this is too confusing you can just use sendData() and recvData() on their own.
+
+## rendering abstraction
+
+I'll explain this later lol
