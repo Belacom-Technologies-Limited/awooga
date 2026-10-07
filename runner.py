@@ -1,4 +1,5 @@
-from libs import belacomInfo, render
+import render
+import belacomInfo
 import pygame
 
 # initialization
@@ -6,7 +7,7 @@ renderer = render.main()
 screen = renderer.init(icon = "assets/orange.png", caption = "runner")
 
 # constant
-layers = [[],[]]
+layers = [[],[]] 
 
 # frameloop functions
 def jumper(main):
